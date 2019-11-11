@@ -20,6 +20,7 @@ int main(int argc, char** argv){
     
     // pid_t pid;
     pid_t pids[nentr];
+
     // pid=0;
     // printf("pid after init is %d\n",pid);
     // printf("Fork pid.\n");
@@ -38,17 +39,19 @@ int main(int argc, char** argv){
     //         printf("This is the parent.\n");
 	// 		break;
 	// }
-    // for (int i = 0; i < nentr; ++i){
-    //     if ( (pids[i] = fork()) < 0 ) {
-    //         printf("Fork error.\n");
-	// 		perror("fork failed");
-	// 		exit(1);
-    //     }
-    //     else if (pids[i] == 0) {
-    //         // DoWorkInChild();
-    //         exit(0);
-    //     }
-    // }
+    for (int i = 0; i < nentr; ++i){
+        pids[i] = fork();
+        // if ( (pids[i] = fork()) < 0 ) {
+        if ( pids[i] < 0 ) {
+            printf("Fork error.\n");
+            perror("fork failed");
+            exit(1);
+        }
+        else if (pids[i] == 0) {
+            // DoWorkInChild();
+            // exit(0);
+        }
+    }
 
 // // // // // // // // // // // // // // // // // // 
     /* Wait for children to exit. */
