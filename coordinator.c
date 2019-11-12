@@ -21,6 +21,11 @@ int main(int argc, char** argv){
     for(int i=0; i<entries_num; i++){
         ar_entry[i]=i+1;
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // getpid(): obtain my own ID
+    // getppid(): get the ID of my parent
+    // printf ( " Process has as ID the number : % ld \n " ,( long ) getpid () );
+    // printf ( " Parent of the Process has as ID : % ld \n " ,( long ) getppid () );
     // pid_t pid;
     pid_t pids[peers_num];
     // pid_t pids[3];
