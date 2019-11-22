@@ -4,18 +4,24 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <sys/ipc.h>
 #include <unistd.h>
+#include <sys/shm.h>
+
+/* Number of elements in shared memory buffer */
+#define NUM_ELEM 10
 
 void checker(const char *whoami){
-        printf("I am a %s.  My pid is:%d  my ppid is %d\n",
-                        whoami, getpid(), getppid() );
+        printf("I am a %s. My pid: %d, my ppid: %d\n", whoami, getpid(), getppid() );
 }
 
 int main(int argc, char** argv){
     // argv[1] is number of peers
     // argv[2] is number of entries
     int status;
+    int ShmID;
     int n;
+    struct shmid_ds Myshmid_ds;
     pid_t pid;
 
     if (argc != 3) {
@@ -34,7 +40,10 @@ int main(int argc, char** argv){
     for(int i=0; i<entries_num; i++){
         ar_entry[i]=i+1;
     }
-    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    /* Init Shared memory */
+    ShmID=shmget(IPC_PRIVATE, NUM_ELEM, 0666 | IPC_CREAT); 
+    
     pid_t pids[peers_num];
     
     checker("parent");
@@ -59,6 +68,9 @@ int main(int argc, char** argv){
         printf("Child with PID %ld exited with status 0x%x.\n", (long)pid, status);
         --n;  // TODO(pts): Remove pid from the pids array.
     }
+
+    /* Remove shared memory */
+    shmctl(ShmID, IPC_RMID, &Myshmid_ds);
 
     return 0;
 }
