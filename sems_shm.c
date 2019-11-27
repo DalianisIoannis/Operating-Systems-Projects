@@ -1,5 +1,6 @@
-#include "semaphores.h"
-
+#include "sems_shm.h"
+// // // // // // // // // // // // // // // //
+// // // // // // // // // // // // // // // //semaphores
 int Sem_Init(key_t key, int nsems, int value){
     int sem_id, i, error;
     union semun arg;
@@ -63,17 +64,6 @@ int Sem_Up(int sem_id, int sem_num){ //P()
     
 }
 
-int Sem_Del(int sem_id){
-    union semun sem_union;
-    if(sem_id<0){
-        fprintf(stderr, "Failed to del sem.\n");
-        return -1;
-    }
-
-    // return semctl(sem_id, 0, IPC_RMID, sem_union);
-    return semctl(sem_id, 0, IPC_RMID);
-}
-
 int Sem_Get(int sem_id, int n){
     union semun arg;
     if(sem_id<0 || n<0){
@@ -93,4 +83,36 @@ int Sem_Set(int sem_id, int n, int val){
     arg.val = val;
 
     return semctl(sem_id, n, SETVAL, arg);
+}
+
+int Sem_Del(int sem_id){
+    union semun sem_union;
+    if(sem_id<0){
+        fprintf(stderr, "Failed to del sem.\n");
+        return -1;
+    }
+
+    // return semctl(sem_id, 0, IPC_RMID, sem_union);
+    return semctl(sem_id, 0, IPC_RMID);
+}
+// // // // // // // // // // // // // // // //
+// // // // // // // // // // // // // // // //shared memory
+int ShMInit(key_t key){
+    if(key<0){
+        fprintf(stderr, "Failed to init ShM.\n");
+        return -1;
+    }
+    return shmget(key, sizeof(ShMData), IPC_CREAT | 0666);
+}
+
+ShMData* ShMAttach(int ShM_id){
+    return shmat(ShM_id, (void*) 0, 0);
+}
+
+int ShMDettach(ShMData* ShM_pointer){
+    return shmdt(ShM_pointer);
+}
+
+int ShMDestroy(int ShM_id){
+    return shmctl(ShM_id, IPC_RMID, 0);
 }

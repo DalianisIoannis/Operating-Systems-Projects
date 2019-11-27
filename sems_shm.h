@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <sys/sem.h>
 #include <sys/ipc.h>
+#include <time.h>
+#include <sys/shm.h>
 
 union semun{
     int val;
@@ -20,6 +22,14 @@ struct sembuf
     unsigned short sem_flg;
 };
 
+// struct to save in shared memory
+typedef struct data
+{
+    int value;
+    int count;
+    double time_consumed;
+}ShMData;
+
 
 // semaphores init
 int Sem_Init(key_t, int, int);
@@ -33,3 +43,12 @@ int Sem_Del(int);
 int Sem_Get(int, int);
 // set sem value
 int Sem_Set(int, int, int);
+
+// init shared memory
+int ShMInit(key_t);
+// get pointer to shared memory
+ShMData *ShMAttach(int);
+// dettach shared memory
+int ShMDettach(ShMData*);
+// destroy shared memory
+int ShMDestroy(int);
