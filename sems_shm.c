@@ -155,9 +155,12 @@ void proc_func(char isrd_wrt, Entry mentry, int entrs){
     if(isrd_wrt==1){//is reader
         int sm_rd = Sem_Down( mentry[rand_entr].semr, 0 );
         printf("Read entry %d value= %d and pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
+        sm_rd = Sem_Up( mentry[rand_entr].semr, 0 );
     }
     else{//is writer
         printf("Write entry %d with pid %d\n",rand_entr, getpid());
-        // int sm_wrt = Sem_Up()
+        int sm_wrt = Sem_Down( mentry[rand_entr].semr, 0 );
+        mentry[rand_entr].value++;
+        sm_wrt = Sem_Up( mentry[rand_entr].semr, 0 );
     }
 }
