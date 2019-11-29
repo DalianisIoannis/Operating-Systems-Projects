@@ -15,12 +15,12 @@ union semun{
     unsigned short *array;
 }arg;
 
-struct sembuf
-{
-    unsigned short sem_num;
-    unsigned short sem_op; // sem operation
-    unsigned short sem_flg;
-};
+// struct sembuf
+// {
+//     unsigned short sem_num;
+//     unsigned short sem_op; // sem operation
+//     unsigned short sem_flg;
+// };
 
 // struct to save in shared memory
 typedef struct data

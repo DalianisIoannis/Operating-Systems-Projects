@@ -4,22 +4,13 @@
 #include <sys/sem.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/timeb.h>
+#include <time.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <unistd.h>
 #include <sys/shm.h>
-
-union semun {
-	int val;
-	struct semid_ds *buf;
-	unsigned short *array;
-};
-
-static int set_semvalue(void);
-static void del_semvalue(void);
-static int semaphore_p(void);
-static int semaphore_v(void);
-static int sem_id;
+#include "sems_shm.h"
 
 /* Number of elements in shared memory buffer */
 #define NUM_ELEM 10
@@ -31,150 +22,179 @@ void checker(const char *whoami){
 int main(int argc, char** argv){
     // argv[1] is number of peers
     // argv[2] is number of entries
-    int status;
+    // n = atoi(argv[1]);
+    // m = atoi(argv[2]);
+    int sem_id, status=0;
     int ShmID;
-    int n;
+    int i, n, m, j;
+    int *my_matrix, *cha_array;
     struct shmid_ds Myshmid_ds;
     pid_t pid;
+    int peers_num;
+    int entries_num;
+    int pause_time;
+    char op_char;
+    pid_t pidd;
+    key_t key;
+    int ShM_id;
+    ShMData *ShMPtr;
+    int Writer_id, Reader_id, Mutex_id, Printer_id;
 
+    srand(time(NULL));
+
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //check line input
     if (argc != 3) {
 		fprintf(stderr, "Usage: need more arguments!\n");
         exit(0);
     }
-    int peers_num=atoi(argv[1]);
-    int entries_num=atoi(argv[2]);
+    peers_num=atoi(argv[1]);
+    entries_num=atoi(argv[2]);
     printf("Parameters argc: %d, num of peers: %d and num of entries: %d.\n", argc, peers_num, entries_num);
-    
-    for(int i=0; i<argc; i++){
+    for(i=0; i<argc; i++){
         printf("For i %d argv[i] %s\n", i, argv[i]);
     }
-    
     int ar_entry[entries_num];
-    for(int i=0; i<entries_num; i++){
+    for(i=0; i<entries_num; i++){
         ar_entry[i]=i+1;
     }
-
-    int i;
-	int pause_time;
-	char op_char = 'O';
-	srand((unsigned int)getpid());
-	sem_id = semget((key_t)1234, 1, 0666 | IPC_CREAT);
-	if (argc > 1) {
-		if (!set_semvalue()) {
-			fprintf(stderr, "Failed to initialize semaphore\n");
-			exit(EXIT_FAILURE);
-		}
-		op_char = 'X';
-		sleep(2);
-	}
-
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
-
-    /* Init Shared memory */
-    // ShmID=shmget(IPC_PRIVATE, NUM_ELEM, 0666 | IPC_CREAT); 
-    
-    pid_t pids[peers_num];
-    
+    FILE *temp_file = fopen("temp_file.txt", "w");
+    // shared memory key
+    key = ftok("coordinator.c", 'R');
+    if(key<0){
+        fprintf(stderr, "Failed to make key.\n");
+        exit(EXIT_FAILURE);
+    }
+    ShM_id = ShMInit(key);
+    if(ShM_id<0){
+        exit(EXIT_FAILURE);
+    }
+    ShMPtr = ShMAttach(ShM_id);
+    if( ShMPtr == (ShMData*)(-1) ){
+        fprintf(stderr, "Failed to attach shm.\n");
+        exit(EXIT_FAILURE);
+    }
+    // binary sem
+    // nsems=1 and value=1
+    Writer_id = Sem_Init( (key_t)1234, 1, 1 );
+    if(Writer_id<0){
+        exit(EXIT_FAILURE);
+    }
+    // peers_num number of binary sems
+    Reader_id = Sem_Init( (key_t)4321,  peers_num, 0 );
+    if(Reader_id<0){
+        exit(EXIT_FAILURE);
+    }
+    // sem for counting
+    Mutex_id = Sem_Init( (key_t)2134, 1, 0 );
+    if(Mutex_id<0){
+        exit(EXIT_FAILURE);
+    }
+    // binary sem
+    Printer_id = Sem_Init( (key_t)3124, 1, 1 );
+    if(Printer_id<0){
+        exit(EXIT_FAILURE);
+    }
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
     checker("parent");
+    // my_matrix = malloc( entries_num*sizeof(int) );
+    // my_matrix is ar_entry
+    // ar_entry in shm
+    for(i=0; i<entries_num; i++){
+        // no one else can write
+        // nsem is 0
+        Sem_Down(Writer_id, 0);
+        ShMPtr->value = ar_entry[i];
+        // set value to 0
+        Sem_Set(Mutex_id, 0, 0);
+        for(j=0; j<peers_num; j++){
+            // all can now read
+            Sem_Up(Reader_id, j);
+        }
+        // for now needed
+        Sem_Up(Writer_id, 0);
+    }
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    pid_t pids[peers_num];
     /* Start children. */
-    for (int i = 0; i < peers_num; ++i) {
-
-        if ( (pids[i] = fork()) < 0 ) {
+    for (i = 0; i < peers_num; ++i) {
+        pids[i] = fork();
+        if ( pids[i] < 0 ) {
             perror("fork failed");
-			exit(1);
+			exit(-1);
         }
         else if (pids[i] == 0) {
             checker("child");
+            cha_array = (int*) malloc(entries_num*sizeof(int));
+            for(j=0; j<entries_num; j++){
+                // i process wont read the same twice
+                Sem_Down(Reader_id, i);
+                cha_array[j] = ShMPtr->value;
+                // ++counting sem
+                Sem_Up(Mutex_id, 0);
+                if( Sem_Get(Mutex_id,0)==peers_num ){
+                    // free writer when all peers have read
+                    Sem_Up(Writer_id, 0);
+                }
+            }
+            // break;
             exit(0);
         }
+        else{ // parent
 
+        }
     }
-
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // make reader
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
     /* Wait for children to exit. */
     n=peers_num;
     while (n > 0) {
         pid = wait(&status);
+        if(pid==0){
+            free(cha_array);
+        }
         printf("Child with PID %ld exited with status 0x%x.\n", (long)pid, status);
         --n;  // TODO(pts): Remove pid from the pids array.
     }
-
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
-    for(i = 0; i < 10; i++) {
-		if (!semaphore_p()){
-            exit(EXIT_FAILURE);
-        }
-		printf("%c", op_char);fflush(stdout);
-		pause_time = rand() % 3;
-		sleep(pause_time);
-		printf("%c", op_char);fflush(stdout);
-		if (!semaphore_v()){
-            exit(EXIT_FAILURE);
-        }
-        pause_time = rand() % 2;
-        sleep(pause_time);
-	}
-    printf("\n%d - finished\n", getpid());
-    if (argc > 1) {
-        sleep(10);
-        del_semvalue();
+    if( ShMDettach(ShMPtr)<0 ){
+        fprintf(stderr, "Failed to dettach shm.\n");
+        exit(EXIT_FAILURE);
     }
-    /* Remove shared memory */
-    // shmctl(ShmID, IPC_RMID, &Myshmid_ds);
+    if( ShMDestroy(ShM_id)<0 ){
+        fprintf(stderr, "Failed to destroy shm.\n");
+        exit(EXIT_FAILURE);
+    }
+    Sem_Del(Writer_id);
+    Sem_Del(Reader_id);
+    Sem_Del(Mutex_id);
+    Sem_Del(Printer_id);
+    printf("Open text file to check.\n");
+    fprintf(temp_file, "\n");
+    fclose(temp_file);
+    remove("temp_file.txt");
 
     return 0;
-}
-
-
-
-
-
-static int set_semvalue(void)
-{
-	union semun sem_union;
-	sem_union.val = 1;
-	if (semctl(sem_id, 0, SETVAL, sem_union) == -1){
-        return(0);
-    }
-	return(1);
-}
-
-static void del_semvalue(void)
-{
-	union semun sem_union;
-	if (semctl(sem_id, 0, IPC_RMID, sem_union) == -1){
-	    fprintf(stderr, "Failed to delete semaphore\n");
-    }
-}
-
-static int semaphore_p(void)
-{
-	struct sembuf sem_b;
-	sem_b.sem_num = 0;
-	sem_b.sem_op = -1; /* P() */
-	sem_b.sem_flg = SEM_UNDO;
-	if (semop(sem_id, &sem_b, 1) == -1) {
-		fprintf(stderr, "semaphore_p failed\n");
-		return(0);
-	}
-	return(1);
-}
-
-static int semaphore_v(void){
-	struct sembuf sem_b;
-	sem_b.sem_num = 0;
-	sem_b.sem_op = 1; /* V() */
-	sem_b.sem_flg = SEM_UNDO;
-
-	if (semop(sem_id, &sem_b, 1) == -1) {
-		fprintf(stderr, "semaphore_v failed\n");
-		return(0);
-	}
-
-	return(1);
 }
