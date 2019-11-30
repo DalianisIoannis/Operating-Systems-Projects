@@ -1,42 +1,27 @@
 // getpid(): obtain my own ID
 // getppid(): get the ID of my parent
-#include <sys/wait.h>
-#include <sys/sem.h>
-#include <stdio.h>
-#include <sys/types.h>
 #include <sys/timeb.h>
-#include <time.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include <unistd.h>
-#include <sys/shm.h>
 #include "sems_shm.h"
-
-/* Number of elements in shared memory buffer */
-// #define NUM_ELEM 10
 
 void print_whoami(const char *whoami){
         printf("I am a %s. My pid: %d, my ppid: %d\n", whoami, getpid(), getppid() );
 }
 
 int main(int argc, char** argv){
-    // argv[1] is number of peers
-    // argv[2] is number of entries
-    // n = atoi(argv[1]);
-    // m = atoi(argv[2]);
-    int sem_id, status=0, ShmID, i, n, m, j, peers_num, entries_num;
-    int *my_matrix, *cha_array;
+    // n = atoi(argv[1]);   number of peers
+    // m = atoi(argv[2]);   number of entries
+    // argv[3] number of readers
+    // argv[4] number of writers
+    int sem_id, status=0, ShmID, i, n, j, peers_num, entries_num;
+    int *cha_array;
     struct shmid_ds Myshmid_ds;
     pid_t pid;
-    int pause_time;
     int rdrs_num=5, wrtrs_num=5;
-
-    char isRdr_Wrtr;
-    pid_t pidd;
+    int sem_key;
+    int isRdr_Wrtr; // 1 for reader 0 for writer
     key_t key;
     int ShM_id, Writer_id, Reader_id, Mutex_id, Printer_id;
-    // ShMData *ShMPtr;
-    Entry ShMPtr;
+    Entry ShMPtr;   // ShMData *ShMPtr;
 
     srand(time(NULL));
 
@@ -51,83 +36,46 @@ int main(int argc, char** argv){
     entries_num=atoi(argv[2]);
     printf("Parameters argc: %d, num of peers: %d and num of entries: %d.\n", argc, peers_num, entries_num);
     // for(i=0; i<argc; i++){ printf("For i %d argv[i] %s\n", i, argv[i]); }
-    int ar_entry[entries_num];
-    for(i=0; i<entries_num; i++){
-        ar_entry[i]=i+1;
-    }
-    // // // // // // // // // // // // // // // // // // // // // // // // //
-    // // // // // // // // // // // // // // // // // // // // // // // // //
-    // // // // // // // // // // // // // // // // // // // // // // // // //
     FILE *temp_file = fopen("temp_file.txt", "w");
-    // shared memory key
-    key = ftok("coordinator.c", 'R');
-    // key = ftok("coordinator.c", rand());
+    key = ftok("coordinator.c", getppid()); // shared memory key
     if(key<0){
         fprintf(stderr, "Failed to make key.\n");
         exit(EXIT_FAILURE);
     }
-    // have to take num of entries
-    ShM_id = ShMInit(key);
+    fprintf(temp_file, "Initial array of nums is:\n");
+    int ar_entry[entries_num];
+    for(i=0; i<entries_num; i++){
+        ar_entry[i]=i+1;
+        fprintf(temp_file,"%d\n", ar_entry[i]);
+    }
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //
+    ShM_id = ShMInit(key, entries_num);
     // ShM_id = shmget(key, entries_num*sizeof(Entry), IPC_CREAT | 0666);
     if(ShM_id<0){
         exit(EXIT_FAILURE);
     }
-    // ShMPtr = (Entry) shmat(ShM_id, NULL, 0);
     // ShMPtr = (Entry) ShMAttach(ShM_id);
     ShMPtr = ShMAttach(ShM_id);
-    if( ShMPtr == (ShMData*)(-1) ){
+    // if( ShMPtr == (ShMData*)(-1) ){
+    if( ShMPtr == NULL ){
         fprintf(stderr, "Failed to attach shm.\n");
         exit(EXIT_FAILURE);
     }
-    // for(i=0; i<entries_num; i++){
-    //     ShMPtr[i].id = 1;
-    //     ShMPtr[i].semr = Sem_Init( (key_t)5768, 1, 1 );
-    //     ShMPtr[i].value = ar_entry[i];
-    // }
-    // binary sem nsems=1 and value=1
-    Writer_id = Sem_Init( (key_t)1234, 1, 1 );
-    if(Writer_id<0){
-        exit(EXIT_FAILURE);
-    }
-    // peers_num number of binary sems
-    Reader_id = Sem_Init( (key_t)4321,  peers_num, 0 );
-    if(Reader_id<0){
-        exit(EXIT_FAILURE);
-    }
-    // sem for counting
-    Mutex_id = Sem_Init( (key_t)2134, 1, 0 );
-    if(Mutex_id<0){
-        exit(EXIT_FAILURE);
-    }
-    // binary sem
-    Printer_id = Sem_Init( (key_t)3124, 1, 1 );
-    if(Printer_id<0){
-        exit(EXIT_FAILURE);
-    }
-    // // // // // // // // // // // // // // // // // // // // // // // // //
-    // // // // // // // // // // // // // // // // // // // // // // // // //
-    // // // // // // // // // // // // // // // // // // // // // // // // //
-    print_whoami("parent");
-    // ar_entry in shm
+    sem_key = 5768;
     for(i=0; i<entries_num; i++){
-        // no one else can write
-        Sem_Down(Writer_id, 0);
-        ShMPtr->value = ar_entry[i];
-        // set value to 0
-        Sem_Set(Mutex_id, 0, 0);
-        for(j=0; j<peers_num; j++){
-            // all can now read
-            Sem_Up(Reader_id, j);
-        }
-        // for now needed
-        Sem_Up(Writer_id, 0);
+        ShMPtr[i].semr = Sem_Init( (key_t)sem_key, 1, 1 );
+        sem_key++;
+        ShMPtr[i].value = ar_entry[i];
     }
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
-    // // // // // // // // // // // // // // // // // // // // // // // // //
+    // // // // // // // // // // // // // // // // // // // // // // // // //fot_childs
     pid_t pids[peers_num];
     /* Start children. */
     for (i = 0; i < peers_num; ++i) {
+        isRdr_Wrtr = read_write(&rdrs_num, &wrtrs_num);
         pids[i] = fork();
         if ( pids[i] < 0 ) {
             fprintf(stderr, "Fork failed.\n");
@@ -135,45 +83,9 @@ int main(int argc, char** argv){
         }
         else if (pids[i] == 0) {
             print_whoami("child");
-            // first write and then read
-            cha_array = (int*) malloc(entries_num*sizeof(int));
-            for(j=0; j<entries_num; j++){
-                // i process wont read the same twice
-                Sem_Down(Reader_id, i);
-                cha_array[j] = ShMPtr->value;
-                // ++counting sem
-                Sem_Up(Mutex_id, 0);
-                if( Sem_Get(Mutex_id,0)==peers_num ){
-                    // free writer when all peers have read
-                    Sem_Up(Writer_id, 0);
-                }
-                // Sem_Up(Reader_id, i);
+            for(j=0; j<4; j++){
+                proc_func(isRdr_Wrtr, ShMPtr, entries_num);
             }
-            // break;
-            // WRITE ABOVE
-            for(j=0; j<entries_num; j++){
-                Sem_Down(Writer_id, 0);
-                cha_array[j] = rand()%21;
-                ShMPtr->value = cha_array[j];
-                // ++counting sem
-                Sem_Set(Mutex_id, 0, 0);
-                for(j=0; j<peers_num; j++){
-                    // all can now read
-                    Sem_Up(Reader_id, j);
-                }
-                // for now needed
-                Sem_Up(Writer_id, 0);
-            }
-        // in child process write 
-            printf("In file print\n");
-            Sem_Down(Printer_id, 0);
-            fprintf(temp_file,"\nChild %d\n",getpid());
-            fprintf(temp_file,"The array: \n");
-            for(j=0; j<entries_num; j++){
-                fprintf(temp_file, "%d\n", cha_array[j]);
-            }
-            Sem_Up(Printer_id, 0);
-            free(cha_array);
             exit(0);
         }
     }
@@ -183,16 +95,20 @@ int main(int argc, char** argv){
     /* Wait for children to exit. */
     n=peers_num;
     while (n > 0) {
-        printf("Before wait getpid %d\n",getpid());
+        // printf("Before wait getpid %d\n",getpid());
         pid = wait(&status);
-        printf("After wait getpid %d\n",getpid());
-        printf("After wait pid %d\n",pid);
+        // printf("After wait getpid %d\n",getpid());
+        // printf("After wait pid %d\n",pid);
         printf("Child with PID %ld exited with status 0x%x.\n", (long)pid, status);
-        --n;  // TODO(pts): Remove pid from the pids array.
+        --n;  //  Remove pid from the pids array.
     }
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
     // // // // // // // // // // // // // // // // // // // // // // // // //
+    for(i=0; i<entries_num; i++){
+        printf("%d\n", ShMPtr[i].value);
+        Sem_Del(ShMPtr[i].semr);
+    }
     if( ShMDettach(ShMPtr)<0 ){
         fprintf(stderr, "Failed to dettach shm.\n");
         exit(EXIT_FAILURE);
@@ -201,10 +117,6 @@ int main(int argc, char** argv){
         fprintf(stderr, "Failed to destroy shm.\n");
         exit(EXIT_FAILURE);
     }
-    Sem_Del(Writer_id);
-    Sem_Del(Reader_id);
-    Sem_Del(Mutex_id);
-    Sem_Del(Printer_id);
     printf("Open text file to check.\n");
     fprintf(temp_file, "\n");
     fclose(temp_file);

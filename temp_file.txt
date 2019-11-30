@@ -1,41 +1,37 @@
-
-Child 4294
-The array: 
-19
+Initial array of nums is:
+1
+2
+3
+4
 5
+Initial array of nums is:
+1
+2
+3
+4
 5
+Initial array of nums is:
+1
+2
+3
+4
 5
+Initial array of nums is:
+1
+2
+3
+4
 5
-
-Child 4296
-The array: 
-19
-19
-19
-19
-19
-
-Child 4298
-The array: 
-19
-19
-19
-19
-19
-
-Child 4295
-The array: 
-19
-19
-19
-19
-19
-
-Child 4297
-The array: 
-19
-19
-19
-19
-19
+Initial array of nums is:
+1
+2
+3
+4
+5
+Initial array of nums is:
+1
+2
+3
+4
+5
 

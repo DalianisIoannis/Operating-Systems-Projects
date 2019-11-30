@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/sem.h>
-#include <sys/ipc.h>
+#include <sys/wait.h>
 #include <time.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 #include <sys/shm.h>
 
 union semun{
@@ -13,27 +14,24 @@ union semun{
     unsigned short *array;
 }arg;
 
-// struct sembuf
-// {
+// struct sembuf{
 //     unsigned short sem_num;
 //     unsigned short sem_op; // sem operation
 //     unsigned short sem_flg;
 // };
 
 // entry
-typedef struct data
-{
-    int id;
+typedef struct data{
     int value;
-    int count;
+    int rdr_count;
+    int wrt_count;
     double time_consumed;
-    // sem_t semr;
     int semr;
 }ShMData;
 
 typedef ShMData* Entry;
 
-// semaphores init
+// semaphores initialize
 int Sem_Init(key_t key, int nsems, int value);
 // P() wait sem
 int Sem_Down(int sem_id, int sem_num);
@@ -47,7 +45,8 @@ int Sem_Get(int sem_id, int n);
 int Sem_Set(int sem_id, int n, int val);
 
 // init shared memory
-int ShMInit(key_t key);
+int ShMInit(key_t key, int entries_num);
+// int ShMInit(key_t key);
 // get pointer to shared memory
 ShMData *ShMAttach(int ShM_id);
 // dettach shared memory
@@ -56,6 +55,6 @@ int ShMDettach(ShMData* ShM_pointer);
 int ShMDestroy(int ShM_id);
 
 // process is reader or writer?
-char read_write(int* rdrs, int* wrts);
+int read_write(int* rdrs, int* wrts);
 // function to be executed by processes
-void proc_func(char isrd_wrt, Entry mentry, int entrs);
+void proc_func(int isrd_wrt, Entry mentry, int entrs);
