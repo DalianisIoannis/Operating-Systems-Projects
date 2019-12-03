@@ -147,16 +147,31 @@ int read_write(int* rdrs, int* wrts){
     return 1;
 }
 
-void proc_func(int isrd_wrt, Entry mentry, int entrs){
+int read_or_write(float read_per, float wrt_per){
+    float a = 1.0;
+    float x = (float)rand()/(float)(RAND_MAX/a);
+    // printf("%f\n", x);
+    if(x<=read_per){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+void proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
+    // fprintf(temp_file,"\tMpika\n");
     // randomly take an entry
     int rand_entr = rand()%entrs;
     if(isrd_wrt==1){//is reader
         int sm_rd = Sem_Down( mentry[rand_entr].semr, 0 );
-        printf("Read entry %d with value= %d with process pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
+        fprintf(temp_file, "Read entry %d with value= %d with process pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
+        // printf("Read entry %d with value= %d with process pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
         sm_rd = Sem_Up( mentry[rand_entr].semr, 0 );
     }
     else{//is writer
-        printf("Write at entry %d with process pid %d\n",rand_entr, getpid());
+        fprintf(temp_file, "Write at entry %d with process pid %d\n",rand_entr, getpid());
+        // printf("Write at entry %d with process pid %d\n",rand_entr, getpid());
         int sm_wrt = Sem_Down( mentry[rand_entr].semr, 0 );
         mentry[rand_entr].value++;
         sm_wrt = Sem_Up( mentry[rand_entr].semr, 0 );

@@ -1,37 +1,38 @@
-Initial array of nums is:
-1
-2
-3
-4
-5
-Initial array of nums is:
-1
-2
-3
-4
-5
-Initial array of nums is:
-1
-2
-3
-4
-5
-Initial array of nums is:
-1
-2
-3
-4
-5
-Initial array of nums is:
-1
-2
-3
-4
-5
-Initial array of nums is:
-1
-2
-3
-4
-5
+Num of peers: 5 and num of entries: 5.
+Initial array of entry structs is:
+Entry 1:
+	value = 1
+	semaphore key = 1
+Entry 2:
+	value = 2
+	semaphore key = 2
+Entry 3:
+	value = 3
+	semaphore key = 3
+Entry 4:
+	value = 4
+	semaphore key = 4
+Entry 5:
+	value = 5
+	semaphore key = 5
 
+Write at entry 1 with process pid 461
+Write at entry 0 with process pid 462
+Write at entry 3 with process pid 463
+Write at entry 2 with process pid 464
+Write at entry 3 with process pid 462
+Write at entry 0 with process pid 461
+Write at entry 2 with process pid 463
+Write at entry 1 with process pid 464
+Read entry 1 with value= 4 with process pid 465
+Write at entry 3 with process pid 461
+Read entry 4 with value= 5 with process pid 465
+Write at entry 1 with process pid 463
+Write at entry 2 with process pid 462
+Write at entry 4 with process pid 464
+Write at entry 1 with process pid 462
+Read entry 1 with value= 6 with process pid 465
+Write at entry 2 with process pid 461
+Write at entry 1 with process pid 464
+Write at entry 4 with process pid 463
+Read entry 0 with value= 3 with process pid 465

@@ -55,6 +55,7 @@ int ShMDettach(ShMData* ShM_pointer);
 int ShMDestroy(int ShM_id);
 
 // process is reader or writer?
+int read_or_write(float read_per, float wrt_per);
 int read_write(int* rdrs, int* wrts);
 // function to be executed by processes
-void proc_func(int isrd_wrt, Entry mentry, int entrs);
+void proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
