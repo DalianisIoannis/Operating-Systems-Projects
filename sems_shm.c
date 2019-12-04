@@ -102,34 +102,7 @@ int Sem_Del(int sem_id){
     // return semctl(sem_id, 0, IPC_RMID, sem_union);
     return semctl(sem_id, 0, IPC_RMID);
 }
-// // // // // // // // // // // // // // // //
-// // // // // // // // // // // // // // // //shared memory
-int ShMInit(key_t key, int entries_num){
-// int ShMInit(key_t key){
-    if(key<0){
-        fprintf(stderr, "Failed to init ShM.\n");
-        return -1;
-    }
-    return shmget(key, sizeof(ShMData), IPC_CREAT | 0666);
-    // return shmget(key, entries_num*sizeof(Entry), IPC_CREAT | 0666);
-}
 
-// Entry ShMAttach(int ShM_id){
-ShMData* ShMAttach(int ShM_id){
-    return shmat(ShM_id, (void*) 0, 0);
-    // return shmat(ShM_id, NULL, 0);
-}
-
-// int ShMDettach(Entry ShM_pointer){
-int ShMDettach(ShMData* ShM_pointer){
-    return shmdt(ShM_pointer);
-}
-
-int ShMDestroy(int ShM_id){
-    return shmctl(ShM_id, IPC_RMID, 0);
-}
-// // // // // // // // // // // // // // // //
-// // // // // // // // // // // // // // // //read write funcs
 int read_write(int* rdrs, int* wrts){
     if( rand()%2==1 ){
         if( (*rdrs)!=0 ){
@@ -160,20 +133,55 @@ int read_or_write(float read_per, float wrt_per){
 }
 
 void proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
-    // fprintf(temp_file,"\tMpika\n");
-    // randomly take an entry
+    // https://www.tutorialspoint.com/how-to-measure-time-taken-by-a-function-in-c
+    // https://www.geeksforgeeks.org/how-to-measure-time-taken-by-a-program-in-c/
     int rand_entr = rand()%entrs;
     if(isrd_wrt==1){//is reader
+        // clock_t start, end;
+        // double time_taken;
+        // start = clock();
+
         int sm_rd = Sem_Down( mentry[rand_entr].semr, 0 );
+        // clock_t start, end;
+        // double time_taken;
+        // start = clock();
+
+        // poio apo ta dio rdr_count++;
+        mentry[rand_entr].rdr_count++;
         fprintf(temp_file, "Read entry %d with value= %d with process pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
-        // printf("Read entry %d with value= %d with process pid %d\n",rand_entr, mentry[rand_entr].value, getpid());
+        
+        // end = clock();// - t;
+        // time_taken = ( (double)(end-start) ) / CLOCKS_PER_SEC; // calculate the elapsed time
+        // printf("Metrisa xrono %f\n", time_taken);
+        // mentry[rand_entr].time_consumed += time_taken;
         sm_rd = Sem_Up( mentry[rand_entr].semr, 0 );
+
+        // end = clock();// - t;
+        // time_taken = ( (double)(end-start) ) / CLOCKS_PER_SEC; // calculate the elapsed time
+        
+        // int sm_wrt = Sem_Down( mentry[rand_entr].semr, 0 );
+        // mentry[rand_entr].time_consumed += time_taken;
+        // mentry[rand_entr].rdr_count++;
+        // sm_wrt = Sem_Up( mentry[rand_entr].semr, 0 );
+
     }
     else{//is writer
         fprintf(temp_file, "Write at entry %d with process pid %d\n",rand_entr, getpid());
         // printf("Write at entry %d with process pid %d\n",rand_entr, getpid());
         int sm_wrt = Sem_Down( mentry[rand_entr].semr, 0 );
+        // clock_t start, end;
+        // double time_taken;
+        // start = clock();
+
+        // sleep(10);
         mentry[rand_entr].value++;
+        mentry[rand_entr].wrt_count++;
+
+        // end = clock();// - t;
+        // time_taken = ( (double)(end-start) ) / CLOCKS_PER_SEC; // calculate the elapsed time
+        // printf("Metrisa xrono %f\n", time_taken);
+        // mentry[rand_entr].time_consumed += time_taken;
+
         sm_wrt = Sem_Up( mentry[rand_entr].semr, 0 );
     }
 }

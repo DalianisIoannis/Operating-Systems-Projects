@@ -46,7 +46,6 @@ int Sem_Set(int sem_id, int n, int val);
 
 // init shared memory
 int ShMInit(key_t key, int entries_num);
-// int ShMInit(key_t key);
 // get pointer to shared memory
 ShMData *ShMAttach(int ShM_id);
 // dettach shared memory
