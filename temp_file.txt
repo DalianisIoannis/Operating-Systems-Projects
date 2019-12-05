@@ -1,216 +1,96 @@
-Num of peers: 10 and num of entries: 10.
+Num of peers: 5 and num of entries: 5.
 Initial array of entry structs is:
 Entry 1:
 	value = 1
-	semaphore key = 0
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
 Entry 2:
 	value = 2
-	semaphore key = 1
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
 Entry 3:
 	value = 3
-	semaphore key = 2
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
 Entry 4:
 	value = 4
-	semaphore key = 3
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
 Entry 5:
 	value = 5
-	semaphore key = 4
-	reads made = 0
-	writes made = 0
-Entry 6:
-	value = 6
-	semaphore key = 5
-	reads made = 0
-	writes made = 0
-Entry 7:
-	value = 7
-	semaphore key = 6
-	reads made = 0
-	writes made = 0
-Entry 8:
-	value = 8
-	semaphore key = 7
-	reads made = 0
-	writes made = 0
-Entry 9:
-	value = 9
-	semaphore key = 8
-	reads made = 0
-	writes made = 0
-Entry 10:
-	value = 10
-	semaphore key = 9
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
 
 Execution of peers:
-Write at entry 1 with process pid 1227
-Read entry 7 with value= 8 with process pid 1228
-Read entry 6 with value= 7 with process pid 1229
-Read entry 2 with value= 3 with process pid 1229
-Read entry 2 with value= 3 with process pid 1230
-Read entry 6 with value= 7 with process pid 1228
-Write at entry 7 with process pid 1227
-Write at entry 2 with process pid 1231
-Read entry 6 with value= 7 with process pid 1232
-Read entry 6 with value= 7 with process pid 1232
-Write at entry 6 with process pid 1227
-Read entry 2 with value= 4 with process pid 1229
-Write at entry 6 with process pid 1231
-Read entry 2 with value= 4 with process pid 1228
-Write at entry 6 with process pid 1233
-Read entry 2 with value= 4 with process pid 1230
-Write at entry 6 with process pid 1234
-Read entry 1 with value= 3 with process pid 1235
-Read entry 1 with value= 3 with process pid 1236
-Read entry 2 with value= 4 with process pid 1228
-Read entry 6 with value= 11 with process pid 1230
-Read entry 6 with value= 11 with process pid 1232
-Read entry 6 with value= 11 with process pid 1229
-Write at entry 6 with process pid 1231
-Read entry 2 with value= 4 with process pid 1236
-Write at entry 1 with process pid 1234
-Read entry 1 with value= 3 with process pid 1235
-Write at entry 6 with process pid 1233
-Write at entry 2 with process pid 1227
-Read entry 2 with value= 5 with process pid 1235
-Read entry 6 with value= 13 with process pid 1229
-Write at entry 2 with process pid 1227
-Read entry 1 with value= 5 with process pid 1236
-Write at entry 1 with process pid 1234
-Read entry 6 with value= 13 with process pid 1228
-Read entry 1 with value= 5 with process pid 1232
-Write at entry 1 with process pid 1233
-Read entry 6 with value= 13 with process pid 1230
-Write at entry 6 with process pid 1231
-Read entry 6 with value= 14 with process pid 1228
-Write at entry 6 with process pid 1227
-Read entry 1 with value= 6 with process pid 1232
-Read entry 1 with value= 6 with process pid 1235
-Write at entry 1 with process pid 1233
-Read entry 6 with value= 15 with process pid 1230
-Write at entry 1 with process pid 1231
-Read entry 6 with value= 15 with process pid 1229
-Read entry 2 with value= 6 with process pid 1236
-Write at entry 2 with process pid 1234
-Write at entry 1 with process pid 1231
-Write at entry 1 with process pid 1234
-Read entry 5 with value= 6 with process pid 1236
-Read entry 1 with value= 8 with process pid 1230
-Write at entry 2 with process pid 1233
-Write at entry 6 with process pid 1227
-Read entry 2 with value= 8 with process pid 1232
-Read entry 1 with value= 10 with process pid 1229
-Read entry 2 with value= 8 with process pid 1235
-Read entry 6 with value= 16 with process pid 1228
-Read entry 1 with value= 10 with process pid 1228
-Write at entry 6 with process pid 1227
-Read entry 1 with value= 10 with process pid 1229
-Write at entry 2 with process pid 1234
-Read entry 5 with value= 6 with process pid 1235
-Read entry 1 with value= 10 with process pid 1232
-Read entry 1 with value= 10 with process pid 1230
-Write at entry 2 with process pid 1231
-Write at entry 1 with process pid 1233
-Read entry 3 with value= 4 with process pid 1236
-Read entry 6 with value= 17 with process pid 1236
-Write at entry 5 with process pid 1234
-Write at entry 1 with process pid 1227
-Read entry 1 with value= 12 with process pid 1228
-Read entry 2 with value= 11 with process pid 1229
-Read entry 2 with value= 10 with process pid 1230
-Write at entry 2 with process pid 1233
-Write at entry 1 with process pid 1231
-Read entry 3 with value= 4 with process pid 1235
-Read entry 2 with value= 11 with process pid 1232
-Read entry 2 with value= 11 with process pid 1228
-Write at entry 2 with process pid 1231
-Read entry 1 with value= 13 with process pid 1230
-Write at entry 3 with process pid 1234
-Read entry 1 with value= 13 with process pid 1229
-Read entry 5 with value= 7 with process pid 1232
-Read entry 6 with value= 17 with process pid 1235
-Write at entry 1 with process pid 1227
-Read entry 7 with value= 9 with process pid 1236
-Write at entry 5 with process pid 1233
-Read entry 3 with value= 5 with process pid 1232
-Write at entry 3 with process pid 1233
-Read entry 2 with value= 12 with process pid 1230
-Read entry 6 with value= 17 with process pid 1236
-Read entry 7 with value= 9 with process pid 1235
-Write at entry 5 with process pid 1231
-Write at entry 6 with process pid 1234
-Read entry 6 with value= 18 with process pid 1235
-Write at entry 7 with process pid 1234
-Write at entry 6 with process pid 1233
-Read entry 4 with value= 5 with process pid 1236
+Write 69 at entry 3 with process pid 3696
+Read entry 4 with value = 4 with process pid 3696
+Write 17 at entry 2 with process pid 3696
+Write 1 at entry 4 with process pid 3696
+For peer 3696 time counted is 0.000468.
+
+Write 69 at entry 3 with process pid 3705
+Read entry 4 with value = 1 with process pid 3705
+Write 17 at entry 2 with process pid 3705
+Write 1 at entry 4 with process pid 3705
+For peer 3705 time counted is 0.000424.
+
+Write 69 at entry 3 with process pid 3715
+Read entry 4 with value = 1 with process pid 3715
+Write 17 at entry 2 with process pid 3715
+Write 1 at entry 4 with process pid 3715
+For peer 3715 time counted is 0.000327.
+
+Write 69 at entry 3 with process pid 3726
+Read entry 4 with value = 1 with process pid 3726
+Write 17 at entry 2 with process pid 3726
+Write 1 at entry 4 with process pid 3726
+For peer 3726 time counted is 0.000321.
+
+Write 69 at entry 3 with process pid 3736
+Read entry 4 with value = 1 with process pid 3736
+Write 17 at entry 2 with process pid 3736
+Write 1 at entry 4 with process pid 3736
+For peer 3736 time counted is 0.000390.
+
 
 Final form of shared memory entries:
 Entry 1:
 	value = 1
-	semaphore key = 0
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
-	time consumed in process = 0.000000
 Entry 2:
-	value = 14
-	semaphore key = 1
-	reads made = 16
-	writes made = 12
-	time consumed in process = 0.000000
+	value = 17
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
+	reads made = 0
+	writes made = 5
 Entry 3:
-	value = 12
-	semaphore key = 2
-	reads made = 16
-	writes made = 9
-	time consumed in process = 0.000000
+	value = 69
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
+	reads made = 0
+	writes made = 5
 Entry 4:
-	value = 6
-	semaphore key = 3
-	reads made = 3
-	writes made = 2
-	time consumed in process = 0.000000
+	value = 1
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
+	reads made = 0
+	writes made = 5
 Entry 5:
 	value = 5
-	semaphore key = 4
-	reads made = 1
-	writes made = 0
-	time consumed in process = 0.000000
-Entry 6:
-	value = 9
-	semaphore key = 5
-	reads made = 3
-	writes made = 3
-	time consumed in process = 0.000000
-Entry 7:
-	value = 19
-	semaphore key = 6
-	reads made = 18
-	writes made = 12
-	time consumed in process = 0.000000
-Entry 8:
-	value = 10
-	semaphore key = 7
-	reads made = 3
-	writes made = 2
-	time consumed in process = 0.000000
-Entry 9:
-	value = 9
-	semaphore key = 8
+	read and write semaphore key = -1
+	mutual exclusion semaphore key = -1
 	reads made = 0
 	writes made = 0
-	time consumed in process = 0.000000
-Entry 10:
-	value = 10
-	semaphore key = 9
-	reads made = 0
-	writes made = 0
-	time consumed in process = 0.000000

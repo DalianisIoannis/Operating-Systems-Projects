@@ -4,9 +4,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
+#include <math.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
+
+#define MULTIPLIER 5
+#define LEXP 2
 
 union semun{
     int val;
@@ -26,7 +30,11 @@ typedef struct data{
     int rdr_count;
     int wrt_count;
     double time_consumed;
-    int semr;
+    // common for reading and writing
+    // sem for mutual exclusion of writers
+    int rw_mutex;
+    // for mutual exclusion when informing read_count
+    int mutex;
 }ShMData;
 
 typedef ShMData* Entry;
@@ -39,10 +47,6 @@ int Sem_Down(int sem_id, int sem_num);
 int Sem_Up(int sem_id, int sem_num);
 // semaphore destroy
 int Sem_Del(int sem_id);
-// Get sem value
-int Sem_Get(int sem_id, int n);
-// set sem value
-int Sem_Set(int sem_id, int n, int val);
 
 // init shared memory
 int ShMInit(key_t key, int entries_num);
