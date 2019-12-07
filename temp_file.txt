@@ -1,115 +1,493 @@
-Num of peers: 6, num of entries: 6, num of repititions: 4, percentage of readers: 0.400000 and percentage of writers: 0.600000.
-Initial array of shared memory entry structs is:
+Num of peers: 17, num of entries: 17, num of repititions: 150, percentage of readers: 0.400000 and percentage of writers: 0.600000.
+Initial array of shared memory entries is:
 Entry 1:
 	value = 1
-	read and write semaphore key = 32769
-	mutual exclusion semaphore key = 65538
+	read and write semaphore key = 0
+	mutual exclusion semaphore key = 1
 	reads made = 0
 	writes made = 0
 Entry 2:
 	value = 2
-	read and write semaphore key = 98307
-	mutual exclusion semaphore key = 131076
+	read and write semaphore key = 2
+	mutual exclusion semaphore key = 3
 	reads made = 0
 	writes made = 0
 Entry 3:
 	value = 3
-	read and write semaphore key = 163845
-	mutual exclusion semaphore key = 196614
+	read and write semaphore key = 4
+	mutual exclusion semaphore key = 5
 	reads made = 0
 	writes made = 0
 Entry 4:
 	value = 4
-	read and write semaphore key = 229383
-	mutual exclusion semaphore key = 262152
+	read and write semaphore key = 6
+	mutual exclusion semaphore key = 7
 	reads made = 0
 	writes made = 0
 Entry 5:
 	value = 5
-	read and write semaphore key = 294921
-	mutual exclusion semaphore key = 327690
+	read and write semaphore key = 8
+	mutual exclusion semaphore key = 9
 	reads made = 0
 	writes made = 0
 Entry 6:
 	value = 6
-	read and write semaphore key = 360459
-	mutual exclusion semaphore key = 393228
+	read and write semaphore key = 10
+	mutual exclusion semaphore key = 11
+	reads made = 0
+	writes made = 0
+Entry 7:
+	value = 7
+	read and write semaphore key = 12
+	mutual exclusion semaphore key = 13
+	reads made = 0
+	writes made = 0
+Entry 8:
+	value = 8
+	read and write semaphore key = 14
+	mutual exclusion semaphore key = 15
+	reads made = 0
+	writes made = 0
+Entry 9:
+	value = 9
+	read and write semaphore key = 16
+	mutual exclusion semaphore key = 17
+	reads made = 0
+	writes made = 0
+Entry 10:
+	value = 10
+	read and write semaphore key = 18
+	mutual exclusion semaphore key = 19
+	reads made = 0
+	writes made = 0
+Entry 11:
+	value = 11
+	read and write semaphore key = 20
+	mutual exclusion semaphore key = 21
+	reads made = 0
+	writes made = 0
+Entry 12:
+	value = 12
+	read and write semaphore key = 22
+	mutual exclusion semaphore key = 23
+	reads made = 0
+	writes made = 0
+Entry 13:
+	value = 13
+	read and write semaphore key = 24
+	mutual exclusion semaphore key = 25
+	reads made = 0
+	writes made = 0
+Entry 14:
+	value = 14
+	read and write semaphore key = 26
+	mutual exclusion semaphore key = 27
+	reads made = 0
+	writes made = 0
+Entry 15:
+	value = 15
+	read and write semaphore key = 28
+	mutual exclusion semaphore key = 29
+	reads made = 0
+	writes made = 0
+Entry 16:
+	value = 16
+	read and write semaphore key = 30
+	mutual exclusion semaphore key = 31
+	reads made = 0
+	writes made = 0
+Entry 17:
+	value = 17
+	read and write semaphore key = 32
+	mutual exclusion semaphore key = 33
 	reads made = 0
 	writes made = 0
 
 Execution of peers:
-Read entry 2 with value = 2 with process pid 1405
-Write 99 at entry 2 with process pid 1405
-Read entry 4 with value = 4 with process pid 1405
-Read entry 2 with value = 99 with process pid 1407
-Read entry 2 with value = 99 with process pid 1406
-Write 99 at entry 2 with process pid 1407
-Read entry 4 with value = 4 with process pid 1407
-Write 99 at entry 2 with process pid 1406
-Read entry 4 with value = 4 with process pid 1406
-Read entry 2 with value = 99 with process pid 1408
-Read entry 2 with value = 99 with process pid 1409
-Read entry 2 with value = 99 with process pid 1410
-Write 99 at entry 2 with process pid 1408
-Write 99 at entry 2 with process pid 1409
-Read entry 4 with value = 4 with process pid 1408
-Write 99 at entry 2 with process pid 1410
-Read entry 4 with value = 4 with process pid 1409
-Read entry 4 with value = 4 with process pid 1410
-Write 76 at entry 3 with process pid 1405
-For peer 1405 total time counted is 0.000008, readings done are 2, writes done are 2 and average time is 0.000001.
-
-Write 76 at entry 3 with process pid 1407
-For peer 1407 total time counted is 0.000042, readings done are 2, writes done are 2 and average time is 0.000007.
-
-Write 76 at entry 3 with process pid 1406
-For peer 1406 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
-
-Write 76 at entry 3 with process pid 1408
-For peer 1408 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
-
-Write 76 at entry 3 with process pid 1409
-For peer 1409 total time counted is 0.000043, readings done are 2, writes done are 2 and average time is 0.000007.
-
-Write 76 at entry 3 with process pid 1410
-For peer 1410 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
+Write 57 at entry 13 with process pid 1981
+Write 94 at entry 1 with process pid 1981
+Read entry 5 with value = 5 with process pid 1986
+Read entry 13 with value = 57 with process pid 1987
+Write 8 at entry 7 with process pid 1988
+Read entry 13 with value = 57 with process pid 1990
+Read entry 2 with value = 2 with process pid 1992
+Read entry 17 with value = 17 with process pid 1983
+Read entry 6 with value = 6 with process pid 1980
+Read entry 9 with value = 9 with process pid 1985
+Read entry 5 with value = 5 with process pid 1985
+Write 5 at entry 1 with process pid 1992
+Write 73 at entry 17 with process pid 1991
+Read entry 10 with value = 10 with process pid 1981
+Write 21 at entry 9 with process pid 1986
+Read entry 9 with value = 21 with process pid 1990
+Read entry 13 with value = 57 with process pid 1983
+Write 25 at entry 8 with process pid 1987
+Read entry 14 with value = 14 with process pid 1993
+Write 22 at entry 10 with process pid 1989
+Read entry 9 with value = 21 with process pid 1988
+Write 15 at entry 5 with process pid 1990
+Write 30 at entry 3 with process pid 1994
+Write 88 at entry 12 with process pid 1994
+Write 86 at entry 2 with process pid 1994
+Write 69 at entry 9 with process pid 1981
+Write 81 at entry 4 with process pid 1983
+Write 93 at entry 4 with process pid 1987
+Write 11 at entry 15 with process pid 1990
+Read entry 6 with value = 6 with process pid 1982
+Read entry 12 with value = 88 with process pid 1983
+Read entry 8 with value = 25 with process pid 1980
+Read entry 14 with value = 14 with process pid 1988
+Read entry 8 with value = 25 with process pid 1992
+Write 67 at entry 6 with process pid 1990
+Read entry 1 with value = 92 with process pid 1994
+Write 16 at entry 1 with process pid 1988
+Write 92 at entry 1 with process pid 1995
+Write 1 at entry 16 with process pid 1984
+Read entry 13 with value = 57 with process pid 1982
+Read entry 16 with value = 1 with process pid 1996
+Write 5 at entry 13 with process pid 1988
+Read entry 8 with value = 25 with process pid 1980
+Write 77 at entry 2 with process pid 1980
+Write 51 at entry 17 with process pid 1980
+Write 47 at entry 14 with process pid 1980
+Write 94 at entry 8 with process pid 1994
+Read entry 6 with value = 67 with process pid 1985
+Write 89 at entry 8 with process pid 1984
+Write 54 at entry 1 with process pid 1983
+Write 15 at entry 16 with process pid 1993
+Write 86 at entry 16 with process pid 1996
+Write 18 at entry 8 with process pid 1980
+Write 5 at entry 8 with process pid 1985
+Write 54 at entry 4 with process pid 1984
+Write 92 at entry 4 with process pid 1983
+Write 23 at entry 4 with process pid 1985
+Write 87 at entry 1 with process pid 1982
+Write 82 at entry 6 with process pid 1992
+Read entry 11 with value = 11 with process pid 1984
+Read entry 12 with value = 88 with process pid 1984
+Write 9 at entry 17 with process pid 1984
+Write 63 at entry 3 with process pid 1982
+Read entry 11 with value = 11 with process pid 1984
+Write 14 at entry 1 with process pid 1985
+Write 88 at entry 16 with process pid 1985
+Write 57 at entry 12 with process pid 1985
+Write 50 at entry 2 with process pid 1982
+Write 61 at entry 1 with process pid 1985
+Write 100 at entry 10 with process pid 1982
+Write 70 at entry 9 with process pid 1984
+Write 73 at entry 2 with process pid 1982
+Read entry 5 with value = 15 with process pid 1984
+Read entry 7 with value = 8 with process pid 1985
+Read entry 10 with value = 100 with process pid 1985
+Write 26 at entry 14 with process pid 1985
+Read entry 5 with value = 15 with process pid 1985
+Write 21 at entry 8 with process pid 1982
+Read entry 11 with value = 11 with process pid 1984
+Read entry 11 with value = 11 with process pid 1985
+Read entry 13 with value = 5 with process pid 1985
+Write 49 at entry 5 with process pid 1984
+Write 40 at entry 16 with process pid 1985
+Read entry 11 with value = 11 with process pid 1982
+Write 40 at entry 12 with process pid 1984
+Write 56 at entry 10 with process pid 1985
+Read entry 13 with value = 5 with process pid 1985
+Write 32 at entry 4 with process pid 1985
+Read entry 10 with value = 56 with process pid 1982
+Write 8 at entry 10 with process pid 1984
+Write 10 at entry 6 with process pid 1982
+Write 9 at entry 10 with process pid 1982
+Write 85 at entry 10 with process pid 1982
+Write 32 at entry 16 with process pid 1982
+Read entry 1 with value = 61 with process pid 1982
+Write 3 at entry 7 with process pid 1985
+Write 52 at entry 1 with process pid 1982
+Read entry 7 with value = 3 with process pid 1984
+Write 5 at entry 7 with process pid 1982
+Write 31 at entry 9 with process pid 1984
+Read entry 7 with value = 5 with process pid 1985
+Write 93 at entry 12 with process pid 1984
+Write 15 at entry 12 with process pid 1984
+Write 29 at entry 15 with process pid 1985
+Write 55 at entry 15 with process pid 1985
+Read entry 5 with value = 49 with process pid 1985
+Write 92 at entry 9 with process pid 1985
+Write 59 at entry 2 with process pid 1985
+Read entry 6 with value = 10 with process pid 1985
+Write 82 at entry 8 with process pid 1984
+Read entry 16 with value = 32 with process pid 1984
+Read entry 3 with value = 63 with process pid 1984
+Read entry 7 with value = 5 with process pid 1984
+Read entry 16 with value = 32 with process pid 1984
+Read entry 7 with value = 5 with process pid 1984
+Write 26 at entry 8 with process pid 1985
+Write 10 at entry 1 with process pid 1985
+Read entry 4 with value = 32 with process pid 1984
+Read entry 5 with value = 49 with process pid 1984
+Write 35 at entry 1 with process pid 1985
+Read entry 2 with value = 59 with process pid 1985
+Write 59 at entry 6 with process pid 1984
+Write 58 at entry 11 with process pid 1985
+Read entry 5 with value = 49 with process pid 1985
+Write 95 at entry 1 with process pid 1985
+Read entry 7 with value = 5 with process pid 1984
+Read entry 10 with value = 85 with process pid 1984
+Write 86 at entry 3 with process pid 1985
+Write 99 at entry 4 with process pid 1985
+Read entry 13 with value = 5 with process pid 1985
+Write 79 at entry 17 with process pid 1984
+Write 84 at entry 7 with process pid 1984
+Read entry 4 with value = 99 with process pid 1985
+Read entry 6 with value = 59 with process pid 1984
+Read entry 8 with value = 26 with process pid 1985
+Read entry 10 with value = 85 with process pid 1985
+Read entry 2 with value = 59 with process pid 1984
+Write 65 at entry 17 with process pid 1985
+Read entry 16 with value = 32 with process pid 1984
+Write 30 at entry 9 with process pid 1984
+Read entry 15 with value = 55 with process pid 1985
+Write 50 at entry 14 with process pid 1984
+Read entry 12 with value = 15 with process pid 1984
+Read entry 11 with value = 58 with process pid 1985
+Write 88 at entry 12 with process pid 1984
+Read entry 13 with value = 5 with process pid 1984
+Write 66 at entry 9 with process pid 1984
+Write 9 at entry 16 with process pid 1984
+Read entry 4 with value = 99 with process pid 1984
+Write 64 at entry 15 with process pid 1985
+Read entry 14 with value = 50 with process pid 1984
+Read entry 14 with value = 50 with process pid 1985
+Write 68 at entry 11 with process pid 1985
+Write 18 at entry 11 with process pid 1985
+Read entry 17 with value = 65 with process pid 1985
+Read entry 12 with value = 88 with process pid 1985
+Write 56 at entry 6 with process pid 1985
+Write 87 at entry 15 with process pid 1985
+Write 9 at entry 3 with process pid 1985
+Read entry 7 with value = 84 with process pid 1984
+Write 75 at entry 3 with process pid 1984
+Read entry 16 with value = 9 with process pid 1984
+Write 85 at entry 2 with process pid 1984
+Read entry 16 with value = 9 with process pid 1984
+Write 48 at entry 7 with process pid 1984
+Write 48 at entry 1 with process pid 1985
+Read entry 17 with value = 65 with process pid 1985
+Write 15 at entry 6 with process pid 1984
+Write 93 at entry 12 with process pid 1984
+Write 100 at entry 15 with process pid 1985
+Read entry 1 with value = 48 with process pid 1985
+Read entry 13 with value = 5 with process pid 1985
+Read entry 4 with value = 99 with process pid 1985
+Read entry 6 with value = 15 with process pid 1984
+Write 50 at entry 17 with process pid 1985
+Write 55 at entry 13 with process pid 1985
+Read entry 10 with value = 85 with process pid 1985
+Read entry 6 with value = 15 with process pid 1985
+Write 80 at entry 17 with process pid 1984
+Read entry 12 with value = 93 with process pid 1984
+Write 98 at entry 9 with process pid 1985
+Write 70 at entry 8 with process pid 1985
+Read entry 10 with value = 85 with process pid 1984
+Write 79 at entry 10 with process pid 1985
+Write 78 at entry 4 with process pid 1984
+Read entry 14 with value = 50 with process pid 1984
+Read entry 10 with value = 79 with process pid 1984
+Write 6 at entry 14 with process pid 1984
+Write 40 at entry 11 with process pid 1984
+Write 99 at entry 16 with process pid 1984
+Write 45 at entry 7 with process pid 1984
+Read entry 1 with value = 48 with process pid 1984
+Write 86 at entry 17 with process pid 1984
+Write 74 at entry 11 with process pid 1984
+Write 77 at entry 16 with process pid 1984
+Read entry 1 with value = 48 with process pid 1984
+Read entry 6 with value = 15 with process pid 1984
+Read entry 2 with value = 85 with process pid 1984
+Read entry 10 with value = 79 with process pid 1984
+Write 78 at entry 12 with process pid 1984
+Write 51 at entry 1 with process pid 1984
+Write 71 at entry 4 with process pid 1984
+Read entry 7 with value = 45 with process pid 1984
+Read entry 1 with value = 51 with process pid 1984
+Read entry 5 with value = 49 with process pid 1984
+Write 32 at entry 14 with process pid 1984
+Write 71 at entry 14 with process pid 1984
+Write 78 at entry 1 with process pid 1984
+Write 55 at entry 10 with process pid 1984
+Read entry 15 with value = 100 with process pid 1984
+Write 9 at entry 14 with process pid 1984
+Write 31 at entry 17 with process pid 1984
+Read entry 5 with value = 49 with process pid 1984
+Write 86 at entry 13 with process pid 1984
+Write 10 at entry 10 with process pid 1984
+Write 9 at entry 4 with process pid 1984
+Write 5 at entry 14 with process pid 1984
+Read entry 9 with value = 98 with process pid 1984
+Write 21 at entry 4 with process pid 1984
+Write 18 at entry 16 with process pid 1984
+Write 53 at entry 2 with process pid 1984
+Write 45 at entry 7 with process pid 1984
+Read entry 9 with value = 98 with process pid 1984
+Write 81 at entry 3 with process pid 1984
+Read entry 11 with value = 74 with process pid 1984
+Write 97 at entry 6 with process pid 1984
+Read entry 11 with value = 74 with process pid 1984
+Write 45 at entry 16 with process pid 1984
+Write 98 at entry 11 with process pid 1984
+Write 89 at entry 10 with process pid 1984
+Write 95 at entry 4 with process pid 1984
+Write 18 at entry 12 with process pid 1984
+Read entry 10 with value = 89 with process pid 1984
+Read entry 17 with value = 31 with process pid 1984
+Read entry 6 with value = 97 with process pid 1984
+Read entry 13 with value = 86 with process pid 1984
+Read entry 13 with value = 86 with process pid 1984
+Read entry 15 with value = 100 with process pid 1984
+Write 93 at entry 15 with process pid 1984
+Write 67 at entry 4 with process pid 1984
+Write 84 at entry 5 with process pid 1984
+Write 64 at entry 8 with process pid 1984
+Read entry 4 with value = 67 with process pid 1984
+Read entry 12 with value = 18 with process pid 1984
+Read entry 15 with value = 93 with process pid 1984
+Read entry 3 with value = 81 with process pid 1984
+Write 33 at entry 1 with process pid 1984
+Read entry 2 with value = 53 with process pid 1984
+Write 18 at entry 10 with process pid 1984
+Read entry 13 with value = 86 with process pid 1984
+Write 53 at entry 3 with process pid 1984
+Write 41 at entry 17 with process pid 1984
+Write 34 at entry 10 with process pid 1984
+Read entry 6 with value = 97 with process pid 1984
+Read entry 3 with value = 53 with process pid 1984
+Write 77 at entry 4 with process pid 1984
+Write 46 at entry 12 with process pid 1984
+Write 34 at entry 16 with process pid 1984
+Write 69 at entry 5 with process pid 1984
+Write 63 at entry 17 with process pid 1984
+Read entry 17 with value = 63 with process pid 1984
+Write 40 at entry 8 with process pid 1984
+Write 46 at entry 5 with process pid 1984
+Write 27 at entry 5 with process pid 1984
+Write 90 at entry 1 with process pid 1984
+Read entry 1 with value = 90 with process pid 1984
+Write 58 at entry 6 with process pid 1984
+Write 34 at entry 11 with process pid 1984
+Write 49 at entry 12 with process pid 1984
+Read entry 10 with value = 34 with process pid 1984
+Write 25 at entry 15 with process pid 1984
+Write 53 at entry 9 with process pid 1984
+Read entry 11 with value = 34 with process pid 1984
+Write 1 at entry 17 with process pid 1984
+Write 52 at entry 2 with process pid 1984
+Write 23 at entry 10 with process pid 1984
+Write 99 at entry 1 with process pid 1984
+Read entry 8 with value = 40 with process pid 1984
+Read entry 2 with value = 52 with process pid 1984
+Write 80 at entry 6 with process pid 1984
+For peer 1984 total time counted is 27464400, readings done are 64, writes done are 86 and average time is 1615552.
 
 Final form of shared memory entries:
 Entry 1:
-	value = 1
-	read and write semaphore key = 32769
-	mutual exclusion semaphore key = 65538
-	reads made = 0
-	writes made = 0
-Entry 2:
 	value = 99
-	read and write semaphore key = 98307
-	mutual exclusion semaphore key = 131076
+	read and write semaphore key = 0
+	mutual exclusion semaphore key = 1
+	reads made = 7
+	writes made = 18
+Entry 2:
+	value = 52
+	read and write semaphore key = 2
+	mutual exclusion semaphore key = 3
 	reads made = 6
-	writes made = 6
+	writes made = 8
 Entry 3:
-	value = 76
-	read and write semaphore key = 163845
-	mutual exclusion semaphore key = 196614
-	reads made = 0
-	writes made = 6
+	value = 53
+	read and write semaphore key = 4
+	mutual exclusion semaphore key = 5
+	reads made = 3
+	writes made = 7
 Entry 4:
-	value = 4
-	read and write semaphore key = 229383
-	mutual exclusion semaphore key = 262152
-	reads made = 6
-	writes made = 0
+	value = 77
+	read and write semaphore key = 6
+	mutual exclusion semaphore key = 7
+	reads made = 5
+	writes made = 14
 Entry 5:
-	value = 5
-	read and write semaphore key = 294921
-	mutual exclusion semaphore key = 327690
-	reads made = 0
-	writes made = 0
+	value = 27
+	read and write semaphore key = 8
+	mutual exclusion semaphore key = 9
+	reads made = 9
+	writes made = 6
 Entry 6:
-	value = 6
-	read and write semaphore key = 360459
-	mutual exclusion semaphore key = 393228
-	reads made = 0
-	writes made = 0
+	value = 80
+	read and write semaphore key = 10
+	mutual exclusion semaphore key = 11
+	reads made = 10
+	writes made = 9
+Entry 7:
+	value = 45
+	read and write semaphore key = 12
+	mutual exclusion semaphore key = 13
+	reads made = 8
+	writes made = 7
+Entry 8:
+	value = 40
+	read and write semaphore key = 14
+	mutual exclusion semaphore key = 15
+	reads made = 5
+	writes made = 11
+Entry 9:
+	value = 53
+	read and write semaphore key = 16
+	mutual exclusion semaphore key = 17
+	reads made = 5
+	writes made = 9
+Entry 10:
+	value = 23
+	read and write semaphore key = 18
+	mutual exclusion semaphore key = 19
+	reads made = 11
+	writes made = 13
+Entry 11:
+	value = 34
+	read and write semaphore key = 20
+	mutual exclusion semaphore key = 21
+	reads made = 9
+	writes made = 7
+Entry 12:
+	value = 49
+	read and write semaphore key = 22
+	mutual exclusion semaphore key = 23
+	reads made = 6
+	writes made = 11
+Entry 13:
+	value = 86
+	read and write semaphore key = 24
+	mutual exclusion semaphore key = 25
+	reads made = 12
+	writes made = 4
+Entry 14:
+	value = 5
+	read and write semaphore key = 26
+	mutual exclusion semaphore key = 27
+	reads made = 5
+	writes made = 8
+Entry 15:
+	value = 25
+	read and write semaphore key = 28
+	mutual exclusion semaphore key = 29
+	reads made = 4
+	writes made = 8
+Entry 16:
+	value = 34
+	read and write semaphore key = 30
+	mutual exclusion semaphore key = 31
+	reads made = 6
+	writes made = 12
+Entry 17:
+	value = 1
+	read and write semaphore key = 32
+	mutual exclusion semaphore key = 33
+	reads made = 5
+	writes made = 12
 
-Total reads made by peers: 12 and total writes: 12.
+Total reads made by peers: 116 and total writes: 164.

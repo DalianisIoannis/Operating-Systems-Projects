@@ -1,4 +1,4 @@
-#include "sems_shm.h"
+#include "functions.h"
 
 int ShMInit(key_t key, int entries_num){
     if(key<0){
@@ -12,8 +12,7 @@ Entry ShMAttach(int ShM_id){
     return shmat(ShM_id, (void*) 0, 0);
 }
 
-// int ShMDettach(Entry ShM_pointer){
-int ShMDettach(ShMData* ShM_pointer){
+int ShMDettach(Entry ShM_pointer){
     return shmdt(ShM_pointer);
 }
 

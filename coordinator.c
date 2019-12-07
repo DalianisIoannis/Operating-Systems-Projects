@@ -1,4 +1,4 @@
-#include "sems_shm.h"
+#include "functions.h"
 
 int main(int argc, char** argv){
     // argv[1] number of peers
@@ -6,12 +6,11 @@ int main(int argc, char** argv){
     // argv[3] float percentage of readers
     // argv[4] float percentage of writers
     // argv[5] int number of repeats
-    int     i, n, j, peers_num, entries_num, sem_key, ShM_id;
-    double  time_taken;
-    int     status = 0;
+    int     i, n, j, peers_num, entries_num, sem_key, ShM_id, status;
+    int     isRdr_Wrtr, writes_made, reads_made, rep_num, parent_of_parent;
+    long    time_taken;
     pid_t   pid;
     float   rdrs_num, wrtrs_num;
-    int     isRdr_Wrtr, writes_made, reads_made, rep_num;
     key_t   key;
     Entry   ShMPtr;   // ShMData *ShMPtr;
     FILE    *temp_file;
@@ -46,7 +45,7 @@ int main(int argc, char** argv){
         fprintf(stderr, "Failed to attach shm.\n");
         exit(EXIT_FAILURE);
     }
-    fprintf(temp_file, "Initial array of shared memory entry structs is:\n");
+    fprintf(temp_file, "Initial array of shared memory entries is:\n");
     sem_key = 5768;
     for(i=0; i<entries_num; i++){
 
@@ -74,12 +73,12 @@ int main(int argc, char** argv){
     fprintf(temp_file, "\nExecution of peers:\n");
     fclose(temp_file);
     
-    int parent_of_parent = (int)(getppid());
+    parent_of_parent = (int)(getppid());
     print_whoami(parent_of_parent);
     // child array
     pid_t pids[peers_num];
     for (i = 0; i < peers_num; ++i) {
-        // sleep(5);
+        // sleep(15);
         pids[i] = fork();
 
         if ( pids[i] < 0 ) {
@@ -87,10 +86,10 @@ int main(int argc, char** argv){
 			exit(EXIT_FAILURE);
         }
         else if (pids[i] == 0) {
-            srand(getppid());
+            srand(getpid());
             reads_made  = 0;
             writes_made = 0;
-            time_taken  = 0.0;
+            time_taken  = 0;
 
             print_whoami(parent_of_parent);
             for(j=0; j<rep_num; j++){
@@ -103,12 +102,15 @@ int main(int argc, char** argv){
                     writes_made++;
                 }
                 temp_file = fopen("temp_file.txt", "a");
-                time_taken = proc_func(isRdr_Wrtr, ShMPtr, entries_num, temp_file);
+                time_taken += proc_func(isRdr_Wrtr, ShMPtr, entries_num, temp_file);
+                if(time_taken<0){
+                    exit(EXIT_FAILURE);
+                }
                 fclose(temp_file);
 
             }
             temp_file = fopen("temp_file.txt", "a");
-            fprintf(temp_file, "For peer %d total time counted is %f, readings done are %d, writes done are %d and average time is %f.\n\n", getpid(), time_taken, reads_made, writes_made, time_taken/(float)entries_num);
+            fprintf(temp_file, "For peer %d total time counted is %ld, readings done are %d, writes done are %d and average time is %ld.\n\n", getpid(), time_taken, reads_made, writes_made, time_taken/entries_num);
             fclose(temp_file);
             exit(0);
         }
@@ -135,9 +137,14 @@ int main(int argc, char** argv){
         reads_made += ShMPtr[i].reads_made;
         writes_made += ShMPtr[i].writes_made;
 
-        Sem_Del(ShMPtr[i].rw_mutex);
-        Sem_Del(ShMPtr[i].mutex);
+        if( Sem_Del(ShMPtr[i].rw_mutex)<0 ){
+            exit(EXIT_FAILURE);
+        }
+        if( Sem_Del(ShMPtr[i].mutex) ){
+            exit(EXIT_FAILURE);
+        }
     }
+    print_whoami(parent_of_parent);
     fprintf(temp_file, "\nTotal reads made by peers: %d and total writes: %d.\n", reads_made, writes_made);
     if( ShMDettach(ShMPtr)<0 ){
         fprintf(stderr, "Failed to dettach shm.\n");

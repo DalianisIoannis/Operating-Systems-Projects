@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <math.h>
-#include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
 
@@ -59,7 +57,6 @@ int ShMDestroy(int ShM_id);
 // process is reader or writer?
 int read_or_write(float read_per, float wrt_per);
 // function to be executed by processes
-double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
+long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
 
-// void print_whoami(const char *whoami);
 void print_whoami(int id);
