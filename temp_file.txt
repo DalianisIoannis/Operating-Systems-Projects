@@ -1,96 +1,115 @@
-Num of peers: 5 and num of entries: 5.
-Initial array of entry structs is:
+Num of peers: 6, num of entries: 6, num of repititions: 4, percentage of readers: 0.400000 and percentage of writers: 0.600000.
+Initial array of shared memory entry structs is:
 Entry 1:
 	value = 1
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 32769
+	mutual exclusion semaphore key = 65538
 	reads made = 0
 	writes made = 0
 Entry 2:
 	value = 2
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 98307
+	mutual exclusion semaphore key = 131076
 	reads made = 0
 	writes made = 0
 Entry 3:
 	value = 3
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 163845
+	mutual exclusion semaphore key = 196614
 	reads made = 0
 	writes made = 0
 Entry 4:
 	value = 4
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 229383
+	mutual exclusion semaphore key = 262152
 	reads made = 0
 	writes made = 0
 Entry 5:
 	value = 5
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 294921
+	mutual exclusion semaphore key = 327690
+	reads made = 0
+	writes made = 0
+Entry 6:
+	value = 6
+	read and write semaphore key = 360459
+	mutual exclusion semaphore key = 393228
 	reads made = 0
 	writes made = 0
 
 Execution of peers:
-Write 69 at entry 3 with process pid 3696
-Read entry 4 with value = 4 with process pid 3696
-Write 17 at entry 2 with process pid 3696
-Write 1 at entry 4 with process pid 3696
-For peer 3696 time counted is 0.000468.
+Read entry 2 with value = 2 with process pid 1405
+Write 99 at entry 2 with process pid 1405
+Read entry 4 with value = 4 with process pid 1405
+Read entry 2 with value = 99 with process pid 1407
+Read entry 2 with value = 99 with process pid 1406
+Write 99 at entry 2 with process pid 1407
+Read entry 4 with value = 4 with process pid 1407
+Write 99 at entry 2 with process pid 1406
+Read entry 4 with value = 4 with process pid 1406
+Read entry 2 with value = 99 with process pid 1408
+Read entry 2 with value = 99 with process pid 1409
+Read entry 2 with value = 99 with process pid 1410
+Write 99 at entry 2 with process pid 1408
+Write 99 at entry 2 with process pid 1409
+Read entry 4 with value = 4 with process pid 1408
+Write 99 at entry 2 with process pid 1410
+Read entry 4 with value = 4 with process pid 1409
+Read entry 4 with value = 4 with process pid 1410
+Write 76 at entry 3 with process pid 1405
+For peer 1405 total time counted is 0.000008, readings done are 2, writes done are 2 and average time is 0.000001.
 
-Write 69 at entry 3 with process pid 3705
-Read entry 4 with value = 1 with process pid 3705
-Write 17 at entry 2 with process pid 3705
-Write 1 at entry 4 with process pid 3705
-For peer 3705 time counted is 0.000424.
+Write 76 at entry 3 with process pid 1407
+For peer 1407 total time counted is 0.000042, readings done are 2, writes done are 2 and average time is 0.000007.
 
-Write 69 at entry 3 with process pid 3715
-Read entry 4 with value = 1 with process pid 3715
-Write 17 at entry 2 with process pid 3715
-Write 1 at entry 4 with process pid 3715
-For peer 3715 time counted is 0.000327.
+Write 76 at entry 3 with process pid 1406
+For peer 1406 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
 
-Write 69 at entry 3 with process pid 3726
-Read entry 4 with value = 1 with process pid 3726
-Write 17 at entry 2 with process pid 3726
-Write 1 at entry 4 with process pid 3726
-For peer 3726 time counted is 0.000321.
+Write 76 at entry 3 with process pid 1408
+For peer 1408 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
 
-Write 69 at entry 3 with process pid 3736
-Read entry 4 with value = 1 with process pid 3736
-Write 17 at entry 2 with process pid 3736
-Write 1 at entry 4 with process pid 3736
-For peer 3736 time counted is 0.000390.
+Write 76 at entry 3 with process pid 1409
+For peer 1409 total time counted is 0.000043, readings done are 2, writes done are 2 and average time is 0.000007.
 
+Write 76 at entry 3 with process pid 1410
+For peer 1410 total time counted is 0.000022, readings done are 2, writes done are 2 and average time is 0.000004.
 
 Final form of shared memory entries:
 Entry 1:
 	value = 1
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 32769
+	mutual exclusion semaphore key = 65538
 	reads made = 0
 	writes made = 0
 Entry 2:
-	value = 17
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
-	reads made = 0
-	writes made = 5
+	value = 99
+	read and write semaphore key = 98307
+	mutual exclusion semaphore key = 131076
+	reads made = 6
+	writes made = 6
 Entry 3:
-	value = 69
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	value = 76
+	read and write semaphore key = 163845
+	mutual exclusion semaphore key = 196614
 	reads made = 0
-	writes made = 5
+	writes made = 6
 Entry 4:
-	value = 1
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
-	reads made = 0
-	writes made = 5
+	value = 4
+	read and write semaphore key = 229383
+	mutual exclusion semaphore key = 262152
+	reads made = 6
+	writes made = 0
 Entry 5:
 	value = 5
-	read and write semaphore key = -1
-	mutual exclusion semaphore key = -1
+	read and write semaphore key = 294921
+	mutual exclusion semaphore key = 327690
 	reads made = 0
 	writes made = 0
+Entry 6:
+	value = 6
+	read and write semaphore key = 360459
+	mutual exclusion semaphore key = 393228
+	reads made = 0
+	writes made = 0
+
+Total reads made by peers: 12 and total writes: 12.

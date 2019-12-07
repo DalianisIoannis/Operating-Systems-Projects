@@ -27,13 +27,12 @@ union semun{
 // entry
 typedef struct data{
     int value;
-    int rdr_count;
-    int wrt_count;
-    double time_consumed;
-    // common for reading and writing
-    // sem for mutual exclusion of writers
+    int read_count;
+    int writes_made;
+    int reads_made;
+    /*common for reading and writing sem for mutual exclusion of writers*/
     int rw_mutex;
-    // for mutual exclusion when informing read_count
+    /*for mutual exclusion when informing read_count*/
     int mutex;
 }ShMData;
 
@@ -59,6 +58,8 @@ int ShMDestroy(int ShM_id);
 
 // process is reader or writer?
 int read_or_write(float read_per, float wrt_per);
-int read_write(int* rdrs, int* wrts);
 // function to be executed by processes
-void proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
+double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
+
+// void print_whoami(const char *whoami);
+void print_whoami(int id);

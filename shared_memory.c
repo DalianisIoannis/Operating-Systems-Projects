@@ -1,19 +1,15 @@
 #include "sems_shm.h"
 
 int ShMInit(key_t key, int entries_num){
-// int ShMInit(key_t key){
     if(key<0){
         fprintf(stderr, "Failed to init ShM.\n");
         return -1;
     }
-    return shmget(key, sizeof(ShMData), IPC_CREAT | 0666);
-    // return shmget(key, entries_num*sizeof(Entry), IPC_CREAT | 0666);
+    return shmget(key, entries_num*sizeof(Entry), IPC_CREAT | 0666);
 }
 
-// Entry ShMAttach(int ShM_id){
-ShMData* ShMAttach(int ShM_id){
+Entry ShMAttach(int ShM_id){
     return shmat(ShM_id, (void*) 0, 0);
-    // return shmat(ShM_id, NULL, 0);
 }
 
 // int ShMDettach(Entry ShM_pointer){
