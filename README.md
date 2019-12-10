@@ -1,8 +1,12 @@
-# Reader-Writers Problem
+# Readers-Writers Problem
 A coordinator of read and write peer processes.
 
+## Compile
+```bash
+make comp
+```
 
-compile:
-  make comp
-execute with:
-  ./runner "child processes" "entries" "percentage of readers" "percentage of writers" "repetitions"
+## Execution
+```bash
+./runner <child processes> <entries> <percentage of readers> <percentage of writers> <repetitions>
+```
