@@ -1,8 +1,8 @@
-# Peer_Process-Coordinator
+# Reader-Writers Problem
 A coordinator of read and write peer processes.
 
 
 compile:
   make comp
 execute with:
-  ./runner <child processes> <entries> <percentage of readers> <percentage of writers> <repetitions>
+  ./runner "child processes" "entries" "percentage of readers" "percentage of writers" "repetitions"
