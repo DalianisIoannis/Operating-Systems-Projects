@@ -57,6 +57,6 @@ int ShMDestroy(int ShM_id);
 // process is reader or writer?
 int read_or_write(float read_per, float wrt_per);
 // function to be executed by processes
-long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
+double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file);
 
 void print_whoami(int id);

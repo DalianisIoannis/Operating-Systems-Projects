@@ -8,7 +8,7 @@ int main(int argc, char** argv){
     // argv[5] int number of repeats
     int     i, n, j, peers_num, entries_num, sem_key, ShM_id, status;
     int     isRdr_Wrtr, writes_made, reads_made, rep_num, parent_of_parent;
-    long    time_taken;
+    double  time_taken;
     pid_t   pid;
     float   rdrs_num, wrtrs_num;
     key_t   key;
@@ -89,7 +89,7 @@ int main(int argc, char** argv){
             srand(getpid());
             reads_made  = 0;
             writes_made = 0;
-            time_taken  = 0;
+            time_taken  = 0.0;
 
             print_whoami(parent_of_parent);
             for(j=0; j<rep_num; j++){
@@ -103,14 +103,15 @@ int main(int argc, char** argv){
                 }
                 temp_file = fopen("temp_file.txt", "a");
                 time_taken += proc_func(isRdr_Wrtr, ShMPtr, entries_num, temp_file);
-                if(time_taken<0){
+                if(time_taken<0.0){
+                    fprintf(stderr, "Error at peer function.\n");
                     exit(EXIT_FAILURE);
                 }
                 fclose(temp_file);
 
             }
             temp_file = fopen("temp_file.txt", "a");
-            fprintf(temp_file, "For peer %d total time counted is %ld, readings done are %d, writes done are %d and average time is %ld.\n\n", getpid(), time_taken, reads_made, writes_made, time_taken/entries_num);
+            fprintf(temp_file, "For peer %d total time counted is %f, readings done are %d, writes done are %d and average time is %f.\n\n", getpid(), time_taken, reads_made, writes_made, time_taken/(float)entries_num);
             fclose(temp_file);
             exit(0);
         }

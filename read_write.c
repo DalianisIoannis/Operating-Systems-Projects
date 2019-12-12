@@ -11,11 +11,11 @@ int read_or_write(float read_per, float wrt_per){
     }
 }
 
-long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
+double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
     // exponential time
     double T = MULTIPLIER*( -log((double)rand()/(double) RAND_MAX) / LEXP  );
-    struct timespec tfather = {0,0}, tchild = {0,0};
-    long start, end;
+    struct timespec starter, ender;
+    double time_taken;
     int rand_entr = rand()%entrs;
     int sem_first_read, sm_rd;
     int random_int = rand()%100+1;
@@ -39,13 +39,11 @@ long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
 
         sm_rd = Sem_Up( mentry[rand_entr].mutex, 0 );
         if(sm_rd<0){
-            fprintf(stderr, "Faiure in read process.\n");
+            fprintf(stderr, "Failure in read process.\n");
             return -1;
         }
         
-
-        clock_gettime(CLOCK_MONOTONIC, &tfather);
-        start = (double)(tfather.tv_nsec);
+        clock_gettime(CLOCK_MONOTONIC, &starter);
 
         sm_rd = Sem_Down( mentry[rand_entr].mutex, 0 );
         if(sm_rd<0){
@@ -53,8 +51,9 @@ long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
             return -1;
         }
 
-        clock_gettime(CLOCK_MONOTONIC, &tchild);
-        end = (double)(tchild.tv_nsec - start);
+        clock_gettime(CLOCK_MONOTONIC, &ender);
+        time_taken = (ender.tv_sec - starter.tv_sec) * 1e9;
+        time_taken = (time_taken + (ender.tv_nsec - starter.tv_nsec)) * 1e-9;
 
         /* reading */
         sleep(T);
@@ -75,21 +74,22 @@ long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
             fprintf(stderr, "Faiure in read process.\n");
             return -1;
         }
-        return end;
+        return time_taken;
     }
 
     else{//is writer
         
-        clock_gettime(CLOCK_MONOTONIC, &tfather);
-        start = (double)(tfather.tv_nsec);
+        clock_gettime(CLOCK_MONOTONIC, &starter);
+
         int sm_wrt = Sem_Down( mentry[rand_entr].rw_mutex, 0 );
         if(sm_wrt<0){
             fprintf(stderr, "Faiure in write process.\n");
             return -1;
         }
-        clock_gettime(CLOCK_MONOTONIC, &tchild);
-        end = (double)(tchild.tv_nsec - start);
 
+        clock_gettime(CLOCK_MONOTONIC, &ender);
+        time_taken = (ender.tv_sec - starter.tv_sec) * 1e9;
+        time_taken = (time_taken + (ender.tv_nsec - starter.tv_nsec)) * 1e-9;
 
         sleep(T);
         fprintf(temp_file, "Write %d at entry %d with process pid %d\n",random_int  ,rand_entr+1, getpid());
@@ -102,7 +102,7 @@ long proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
             return -1;
         }
     }
-    return end;
+    return time_taken;
 }
 
 void print_whoami(int id){
