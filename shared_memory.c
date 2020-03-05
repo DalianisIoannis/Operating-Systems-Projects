@@ -1,11 +1,9 @@
 #include "functions.h"
 
 int ShMInit(key_t key, int entries_num){
-    if(key<0){
-        fprintf(stderr, "Failed to init ShM.\n");
-        return -1;
-    }
-    return shmget(key, entries_num*sizeof(Entry), IPC_CREAT | 0666);
+    if(key<0){ return -1; }
+    int shmid = shmget(key, entries_num*sizeof(ShMData), IPC_CREAT | 0666);
+    return shmid;
 }
 
 Entry ShMAttach(int ShM_id){
