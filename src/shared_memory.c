@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "../headers/functions.h"
 
 int ShMInit(key_t key, int entries_num){
     if(key<0){ return -1; }

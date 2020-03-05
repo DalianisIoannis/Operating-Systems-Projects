@@ -1,4 +1,20 @@
-#include "functions.h"
+#include "../headers/functions.h"
+
+void fnExit1 (FILE *f, int id){
+    fclose(f);
+    ShMDestroy(id);
+}
+
+void fnExit2 (FILE *f, int id, Entry ptr){
+    fclose(f);
+    ShMDettach(ptr);
+    ShMDestroy(id);
+}
+
+void fnExit3 (int id, Entry ptr){
+    ShMDettach(ptr);
+    ShMDestroy(id);
+}
 
 int main(int argc, char** argv){
     // argv[1] number of peers
@@ -19,7 +35,7 @@ int main(int argc, char** argv){
 		fprintf(stderr, "Usage: need 5 arguments!\n");
         exit(EXIT_FAILURE);
     }
-    temp_file   = fopen("temp_file.txt", "w");
+    temp_file   = fopen("../temp_file.txt", "w");
     peers_num   = atoi(argv[1]);
     entries_num = atoi(argv[2]);
     rdrs_num    = (float)(atof(argv[3]));
@@ -28,39 +44,42 @@ int main(int argc, char** argv){
 
     fprintf(temp_file, "Num of peers: %d, num of entries: %d, num of repititions: %d, percentage of readers: %f and percentage of writers: %f.\n", peers_num, entries_num, rep_num, rdrs_num, wrtrs_num);
 
-    key = ftok("./coordinator.c", 'R');
+    key = ftok("./src/coordinator.c", 'R');
     if( (ShM_id = ShMInit(key, entries_num))<0 ){
+        fclose(temp_file);
         fprintf(stderr, "Failed to init ShM.\n");
         exit(EXIT_FAILURE);
     }
 
     if( (ShMPtr = ShMAttach(ShM_id)) == NULL ){
+        fnExit1(temp_file, ShM_id);
         fprintf(stderr, "Failed to attach shm.\n");
         exit(EXIT_FAILURE);
     }
+
     fprintf(temp_file, "Initial array of shared memory entries is:\n");
 
     sem_key = 5768;
     for(i=0; i<entries_num; i++){
 
         if( (ShMPtr[i].rw_mutex  = Sem_Init( (key_t)sem_key, 1, 1 ))<0 ){
-            fprintf(stderr, "Failed to initialize semaphore\n");
+            fnExit2(temp_file, ShM_id, ShMPtr);
+            fprintf(stderr, "Failed to initialize semaphore for entry %d.\n", i+1);
             exit(EXIT_FAILURE);
         }
 
         sem_key++;
 
         if( (ShMPtr[i].mutex = Sem_Init( (key_t)sem_key, 1, 1 ))<0 ){
-            fprintf(stderr, "Failed to initialize semaphore\n");
+            fnExit2(temp_file, ShM_id, ShMPtr);
+            fprintf(stderr, "Failed to initialize semaphore for entry %d.\n", i+1);
             exit(EXIT_FAILURE);
         }
 
         sem_key++;
         
-        ShMPtr[i].value       = i+1;
-        ShMPtr[i].reads_made  = 0;
-        ShMPtr[i].writes_made = 0;
-        ShMPtr[i].read_count  = 0;
+        ShMPtr[i].value = i+1;
+        ShMPtr[i].reads_made = ShMPtr[i].writes_made = ShMPtr[i].read_count = 0;
 
         fprintf(temp_file,"Entry %d:\n\tvalue = %d\n", i+1, ShMPtr[i].value);
         fprintf(temp_file, "\tread and write semaphore key = %d\n", ShMPtr[i].rw_mutex);
@@ -68,25 +87,26 @@ int main(int argc, char** argv){
         fprintf(temp_file, "\treads made = %d\n\twrites made = %d\n", ShMPtr[i].reads_made, ShMPtr[i].writes_made);
 
     }
+
     fprintf(temp_file, "\nExecution of peers:\n");
     fclose(temp_file);
     
     parent_of_parent = (int)(getppid());
     print_whoami(parent_of_parent);
-    // child array
-    pid_t pids[peers_num];
+
+    pid_t pids[peers_num]; // child array
     for (i = 0; i < peers_num; ++i) {
-        // sleep(15);
         pids[i] = fork();
 
         if ( pids[i] < 0 ) {
+            fnExit3(ShM_id, ShMPtr);
             fprintf(stderr, "Fork failed.\n");
-			exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
         else if (pids[i] == 0) {
+
             srand(getpid());
-            reads_made  = 0;
-            writes_made = 0;
+            reads_made = writes_made = 0;
             time_taken  = 0.0;
 
             print_whoami(parent_of_parent);
@@ -99,16 +119,20 @@ int main(int argc, char** argv){
                 else{
                     writes_made++;
                 }
+
                 temp_file = fopen("temp_file.txt", "a");
                 time_taken += proc_func(isRdr_Wrtr, ShMPtr, entries_num, temp_file);
+
                 if(time_taken<0.0){
-                    fprintf(stderr, "Error at peer function.\n");
-                    fclose(temp_file);
+                    fnExit2(temp_file, ShM_id, ShMPtr);
+                    fprintf(stderr, "Error at peer %d.\n", i);
                     exit(EXIT_FAILURE);
                 }
+
                 fclose(temp_file);
 
             }
+
             temp_file = fopen("temp_file.txt", "a");
             fprintf(temp_file, "For peer %d total time counted is %f, readings done are %d, writes done are %d and average time is %f.\n\n", getpid(), time_taken, reads_made, writes_made, time_taken/(float)entries_num);
             fclose(temp_file);
@@ -136,26 +160,33 @@ int main(int argc, char** argv){
         writes_made += ShMPtr[i].writes_made;
 
         if( Sem_Del(ShMPtr[i].rw_mutex)<0 ){
+            fnExit3(ShM_id, ShMPtr);
             fprintf(stderr, "Failed to del sem.\n");
             exit(EXIT_FAILURE);
         }
         if( Sem_Del(ShMPtr[i].mutex)<0 ){
+            fnExit3(ShM_id, ShMPtr);
             fprintf(stderr, "Failed to del sem.\n");
             exit(EXIT_FAILURE);
         }
     }
+
     print_whoami(parent_of_parent);
     fprintf(temp_file, "\nTotal reads made by peers: %d and total writes: %d.\n", reads_made, writes_made);
+
     if( ShMDettach(ShMPtr)<0 ){
+        fclose( temp_file);
         fprintf(stderr, "Failed to dettach shm.\n");
         exit(EXIT_FAILURE);
     }
     if( ShMDestroy(ShM_id)<0 ){
+        fclose( temp_file);
         fprintf(stderr, "Failed to destroy shm.\n");
         exit(EXIT_FAILURE);
     }
-    printf("Open text file to check.\n");
+
     fclose(temp_file);
+    printf("Open text file to check.\n");
 
     return 0;
 }

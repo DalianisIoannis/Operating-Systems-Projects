@@ -3,7 +3,7 @@ A coordinator of read and write peer processes.
 
 ## Compile
 ```bash
-make comp
+make
 ```
 
 ## Execution

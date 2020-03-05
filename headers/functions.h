@@ -1,17 +1,11 @@
 #include <math.h>
-#include <sys/shm.h>
-#include <sys/types.h>
 #include <sys/sem.h>
 #include <sys/wait.h>
 #include <sys/shm.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <semaphore.h>
-#include <fcntl.h>
-#include <sys/ipc.h>
 
 #define MULTIPLIER 5
 #define LEXP 2
@@ -22,12 +16,6 @@ union semun{
     unsigned short *array;
     struct seminfo *__buf;
 }arg;
-
-// struct sembuf{
-//     unsigned short sem_num;
-//     unsigned short sem_op; // sem operation
-//     unsigned short sem_flg;
-// };
 
 typedef struct ShMData{   // entry
     int value;

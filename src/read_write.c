@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "../headers/functions.h"
 
 int read_or_write(float read_per, float wrt_per){
     float a = 1.0;
@@ -17,28 +17,27 @@ double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
     if(isrd_wrt==1){//is reader
 
         if( (Sem_Down( mentry[rand_entr].mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Down\n");
+            fprintf(stderr, "Failed to sem Down at line %d.\n", __LINE__);
             return -1;
         }
 
-        mentry[rand_entr].read_count++;
-        if( mentry[rand_entr].read_count==1 ){
+        if( (mentry[rand_entr].read_count++)==1 ){
             
             if( (Sem_Down( mentry[rand_entr].rw_mutex, 0 ))<0 ){
-                fprintf(stderr, "Failed to sem Down\n");
+                fprintf(stderr, "Failed to sem Down at line %d.\n", __LINE__);
                 return -1;
             }
         }
 
         if( (Sem_Up( mentry[rand_entr].mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Up.\n");
+            fprintf(stderr, "Failed to sem Up at line %d.\n", __LINE__);
             return -1;
         }
         
         clock_gettime(CLOCK_MONOTONIC, &starter);
 
         if( (Sem_Down( mentry[rand_entr].mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Down\n");
+            fprintf(stderr, "Failed to sem Down at line %d.\n", __LINE__);
             return -1;
         }
 
@@ -51,17 +50,16 @@ double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
         fprintf(temp_file, "Read entry %d with value = %d with process pid %d\n",rand_entr+1, mentry[rand_entr].value, getpid());
         mentry[rand_entr].reads_made++;
 
-        mentry[rand_entr].read_count--;
-        if( mentry[rand_entr].read_count==0 ){
+        if( (mentry[rand_entr].read_count--)==0 ){
             
             if( (Sem_Up( mentry[rand_entr].rw_mutex, 0 ))<0 ){
-                fprintf(stderr, "Failed to sem Up.\n");
+                fprintf(stderr, "Failed to sem Up at line %d.\n", __LINE__);
                 return -1;
             }
         }
 
         if( (Sem_Up( mentry[rand_entr].mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Up.\n");
+            fprintf(stderr, "Failed to sem Up at line %d.\n", __LINE__);
             return -1;
         }
         return time_taken;
@@ -72,7 +70,7 @@ double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
         clock_gettime(CLOCK_MONOTONIC, &starter);
 
         if( (Sem_Down( mentry[rand_entr].rw_mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Down\n");
+            fprintf(stderr, "Failed to sem Down at line %d.\n", __LINE__);
             return -1;
         }
 
@@ -86,10 +84,11 @@ double proc_func(int isrd_wrt, Entry mentry, int entrs, FILE* temp_file){
         mentry[rand_entr].writes_made++;
 
         if( (Sem_Up( mentry[rand_entr].rw_mutex, 0 ))<0 ){
-            fprintf(stderr, "Failed to sem Up.\n");
+            fprintf(stderr, "Failed to sem Up at line %d.\n", __LINE__);
             return -1;
         }
     }
+    
     return time_taken;
 }
 

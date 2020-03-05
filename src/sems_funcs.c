@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "../headers/functions.h"
 
 int Sem_Init(key_t key, int nsems, int value){
     int sem_id, i;
