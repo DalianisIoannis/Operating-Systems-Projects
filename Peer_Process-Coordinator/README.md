@@ -1,5 +1,5 @@
 # Readers-Writers Problem
-A coordinator of read and write peer processes.
+A coordinator of read and write peer processes which try to access a shared memory segment.
 
 ## Compile
 ```bash
