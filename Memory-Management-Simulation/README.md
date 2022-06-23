@@ -1,5 +1,5 @@
 # Memory_Management_Simulation
-Memory Management System Simulation based on reference trace. Implementation of LRU and Working Set page replacement algorithms.
+Memory Management System Simulation based on reference trace. Implementation of LRU and Working Set page replacement algorithms on an Inverted Page Table.
 
 ## Compile
 ```bash
